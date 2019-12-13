@@ -104,5 +104,3 @@ scrape_write_table <- function(url){
 datacamp_scrape <- scrape_write_table(url)
 
 datacamp_scrape$tutorial_upvotes <- as.numeric(datacamp_scrape$tutorial_upvotes)
-
-write.csv(datacamp_scrape, "C:/Users/Hunt and Badge/Downloads/datacamp_scrape.csv")
