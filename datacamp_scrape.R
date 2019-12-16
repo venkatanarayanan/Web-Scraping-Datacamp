@@ -1,4 +1,5 @@
 library(tidyverse)
+library(lubridate)
 library(stringr)
 library(rvest)
 
@@ -21,41 +22,31 @@ get_tutorial_name <- function(html){
     html_nodes('.Tutorials') %>%
     html_nodes('h2') %>%
     html_nodes('a') %>%
-    html_text() %>%
-    str_trim() %>%
-    unlist()
+    html_text()
 }
 
 get_tutorial_description <- function(html){
   html %>%
     html_nodes('.description') %>%
-    html_text() %>%
-    str_trim() %>%
-    unlist()
+    html_text()
 }
 
 get_tutorial_author_name <- function(html){
   html %>%
     html_nodes('.name') %>%
-    html_text() %>%
-    str_trim() %>%
-    unlist()
+    html_text()
 }
 
 get_tutorial_published_date <- function(html){
   html %>%
     html_nodes('.date') %>%
-    html_text() %>%
-    str_trim() %>%
-    unlist()
+    html_text()
 }
 
 get_tutorial_topic <- function(html){
   html %>%
     html_nodes('.Tag:not(.mustRead)') %>%
-    html_text() %>%
-    str_trim() %>%
-    unlist()
+    html_text()
 }
 
 get_upvote_count <- function(html){
@@ -104,3 +95,5 @@ scrape_write_table <- function(url){
 datacamp_scrape <- scrape_write_table(url)
 
 datacamp_scrape$tutorial_upvotes <- as.numeric(datacamp_scrape$tutorial_upvotes)
+datacamp_scrape$tutorial_topic <- as.factor(datacamp_scrape$tutorial_topic)
+datacamp_scrape$tutorial_published_date <- mdy(datacamp_scrape$tutorial_published_date)
